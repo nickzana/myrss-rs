@@ -1,0 +1,19 @@
+services:
+  myrss:
+    image: ghcr.io/nickzana/myrss-rs:latest
+    volumes:
+      - ./myrss.toml:/etc/myrss/config.toml:ro
+      - myrss-data:/var/lib/myrss
+  authelia:
+    image: authelia/authelia:latest
+    volumes:
+      - ./authelia:/config
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+
+volumes:
+  myrss-data:

@@ -1,0 +1,25 @@
+server:
+  address: 'tcp://:9091'
+authentication_backend:
+  file:
+    path: /config/users_database.yml
+identity_validation:
+  reset_password:
+    jwt_secret: 'change-me'
+access_control:
+  default_policy: deny
+  rules:
+    - domain: 'rss.example.com'
+      policy: one_factor
+session:
+  secret: 'change-me'
+  cookies:
+    - domain: 'example.com'
+      authelia_url: 'https://auth.example.com'
+storage:
+  encryption_key: 'change-me'
+  local:
+    path: /config/db.sqlite3
+notifier:
+  filesystem:
+    filename: /config/notification.txt

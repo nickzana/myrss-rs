@@ -1,0 +1,6 @@
+# Generate a hash: docker run --rm authelia/authelia authelia crypto hash generate pbkdf2
+users:
+  your-authelia-username:
+    displayname: 'You'
+    password: '$pbkdf2-sha512$...'
+    email: you@example.com

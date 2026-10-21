@@ -1,0 +1,22 @@
+https://auth.example.com {
+	reverse_proxy authelia:9091
+}
+
+https://rss.example.com {
+	# Native app APIs carry their own credentials; do not route them through SSO.
+	handle /api/greader.php* {
+		reverse_proxy myrss:8080
+	}
+
+	handle /api/fever.php* {
+		reverse_proxy myrss:8080
+	}
+
+	handle {
+		forward_auth authelia:9091 {
+			uri /api/verify?rd=https://auth.example.com/
+			copy_headers Remote-User
+		}
+		reverse_proxy myrss:8080
+	}
+}
