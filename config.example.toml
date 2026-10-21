@@ -1,5 +1,5 @@
 listen = "0.0.0.0:8080"
-public_url = "http://localhost:8080"
+public_url = "http://localhost:8080" # env MYRSS_PUBLIC_URL overrides
 data_dir = "/var/lib/myrss"
 
 [auth]
@@ -22,7 +22,6 @@ password_file = "/run/myrss-secrets/myrss_owner_password"
 # [auth.proxy]
 # trusted_peer_cidrs = ["10.0.0.0/8"]
 # user_header = "X-Forwarded-User"
-# expected_user = "owner@example.com"
 
 [feed]
 refresh_minutes = 30

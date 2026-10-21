@@ -375,9 +375,9 @@ fn proxy_identity(state: &AppState, headers: &HeaderMap, addr: SocketAddr) -> Op
         return None;
     }
     let v = headers.get(&proxy.user_header)?.to_str().ok()?;
-    if v == proxy.expected_user {
-        Some(())
-    } else {
+    if v.is_empty() {
         None
+    } else {
+        Some(())
     }
 }

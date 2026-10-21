@@ -93,7 +93,6 @@ mode = 'proxy'
 [auth.proxy]
 trusted_peer_cidrs = ['172.30.0.10/32']  # Caddy container
 user_header = 'Remote-User'
-expected_user = 'alice'
 ```
 
 Pin the proxy container to a static IP so the CIDR check holds. Route the

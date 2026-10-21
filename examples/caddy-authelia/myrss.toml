@@ -8,4 +8,3 @@ mode = 'proxy'
 # Only trust the header when the peer is the Caddy container.
 trusted_peer_cidrs = ['172.30.0.10/32']
 user_header = 'Remote-User'
-expected_user = 'your-authelia-username'

@@ -53,7 +53,7 @@ flowchart LR
   validation, and JWKS signature validation. Optionally pin
   `auth.oidc.subject`.
 - Trusted-proxy auth fails closed unless the direct peer matches configured
-  CIDRs **and** the configured identity header matches exactly.
+  CIDRs **and** the configured identity header is present.
 - Reader apps use named, revocable credentials. Fever's MD5 API key is a wire
   credential, not password storage.
 

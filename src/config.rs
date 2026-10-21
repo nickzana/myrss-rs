@@ -61,7 +61,6 @@ pub struct OidcAuth {
 pub struct ProxyAuth {
     pub trusted_peer_cidrs: Vec<String>,
     pub user_header: String,
-    pub expected_user: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -142,8 +141,11 @@ impl Config {
     pub fn load(path: &Path) -> Result<Self, String> {
         let text =
             std::fs::read_to_string(path).map_err(|e| format!("read {}: {e}", path.display()))?;
-        let cfg: Self =
+        let mut cfg: Self =
             toml::from_str(&text).map_err(|e| format!("parse {}: {e}", path.display()))?;
+        if let Ok(v) = std::env::var("MYRSS_PUBLIC_URL") {
+            cfg.public_url = v;
+        }
         cfg.validate()?;
         Ok(cfg)
     }
@@ -214,8 +216,8 @@ impl Config {
                     cidr.parse::<ipnet::IpNet>()
                         .map_err(|_| format!("invalid proxy CIDR: {cidr}"))?;
                 }
-                if proxy.user_header.trim().is_empty() || proxy.expected_user.trim().is_empty() {
-                    return Err("proxy user_header and expected_user are required".into());
+                if proxy.user_header.trim().is_empty() {
+                    return Err("proxy user_header is required".into());
                 }
             }
         }
