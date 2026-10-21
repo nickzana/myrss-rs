@@ -98,6 +98,21 @@ user_header = 'Remote-User'
 Pin the proxy container to a static IP so the CIDR check holds. Route the
 compat API paths past `forward_auth` as shown in the example `Caddyfile`.
 
+## Egress through a shared VPN/proxy
+
+Keep myrss on a normal network and route only feed egress through a proxy
+(for example the gluetun built-in HTTP proxy on 8888). This preserves the
+direct peer IP used by trusted-proxy auth instead of sharing a network
+namespace.
+
+```toml
+[feed]
+proxy = http://gluetun:8888
+```
+
+Gluetun requires `HTTPPROXY=on` and the client subnet in
+`FIREWALL_OUTBOUND_SUBNETS`.
+
 ## Backup and restore
 
 ```sh
