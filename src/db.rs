@@ -33,7 +33,10 @@ pub async fn connect(config: &Config) -> DbResult<SqlitePool> {
                 io.kind(),
                 format!("{}: {io}", config.database_path().display()),
             )),
-            other => other,
+            other => sqlx::Error::Io(std::io::Error::other(format!(
+                "{}: {other}",
+                config.database_path().display()
+            ))),
         })?;
     sqlx::migrate!("./migrations").run(&pool).await?;
     sqlx::query("INSERT OR IGNORE INTO owner(id, username) VALUES (1, 'owner')")

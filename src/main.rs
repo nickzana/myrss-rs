@@ -26,13 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cli = Cli::parse();
     let config = myrss::config::Config::load(std::path::Path::new(&cli.config))
         .map_err(|e| format!("configuration error: {e}"))?;
-    let filter = std::env::var("RUST_LOG").unwrap_or_else(|_| {
-        if config.server.debug {
-            "myrss=debug,tower_http=debug,sqlx=warn".to_string()
-        } else {
-            "info".to_string()
-        }
-    });
+    let filter = std::env::var("RUST_LOG").unwrap_or_else(|_| myrss::log_filter(&config));
     tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::EnvFilter::new(&filter))
         .init();
