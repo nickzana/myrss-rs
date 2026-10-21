@@ -158,9 +158,13 @@ async fn stream_contents(
     q.s = Some(stream);
     let (ids, _) = query_ids(&s, &q).await?;
     let items = items_for(&s, ids.into_iter().map(|v| v.0).collect()).await?;
-    Ok(Json(
-        json!({"direction":"ltr","id":"","title":"myrss","items":items}),
-    ))
+    Ok(Json(json!({
+        "direction":"ltr",
+        "id":"user/-/state/com.google/reading-list",
+        "updated":Utc::now().timestamp(),
+        "title":"myrss",
+        "items":items
+    })))
 }
 async fn item_contents(
     State(s): State<Arc<AppState>>,
@@ -175,7 +179,11 @@ async fn item_contents(
         .filter_map(|(_, v)| parse_item_id(v))
         .take(250)
         .collect();
-    Ok(Json(json!({"items":items_for(&s,ids).await?})))
+    Ok(Json(json!({
+        "id":"user/-/state/com.google/reading-list",
+        "updated":Utc::now().timestamp(),
+        "items":items_for(&s,ids).await?
+    })))
 }
 
 async fn query_ids(s: &AppState, q: &StreamQ) -> R<(Vec<(i64, i64)>, Option<String>)> {
