@@ -30,5 +30,5 @@ allowed_hosts = []
 
 [server]
 remote_media = false
-retention_days = 90
+# retention_days = 90 # unset = keep all entries forever
 debug = false

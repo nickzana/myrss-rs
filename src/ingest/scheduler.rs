@@ -9,7 +9,9 @@ pub fn spawn_scheduler(state: Arc<AppState>) {
         loop {
             interval.tick().await;
             state.fetcher.refresh_due(&state.pool).await;
-            let _ = crate::db::retain(&state.pool, state.config.server.retention_days).await;
+            if let Some(days) = state.config.server.retention_days {
+                let _ = crate::db::retain(&state.pool, days).await;
+            }
         }
     });
 }

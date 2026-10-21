@@ -92,24 +92,14 @@ impl Default for FeedConfig {
     }
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Default)]
 #[serde(deny_unknown_fields)]
 pub struct ServerConfig {
     #[serde(default)]
     pub remote_media: bool,
     #[serde(default)]
     pub debug: bool,
-    #[serde(default = "default_retention_days")]
-    pub retention_days: i64,
-}
-impl Default for ServerConfig {
-    fn default() -> Self {
-        Self {
-            remote_media: false,
-            debug: false,
-            retention_days: default_retention_days(),
-        }
-    }
+    pub retention_days: Option<i64>,
 }
 
 fn default_listen() -> SocketAddr {
@@ -132,9 +122,6 @@ fn default_max_article_bytes() -> usize {
 }
 fn default_request_timeout_seconds() -> u64 {
     30
-}
-fn default_retention_days() -> i64 {
-    90
 }
 
 impl Config {
