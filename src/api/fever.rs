@@ -164,8 +164,16 @@ async fn apply_mark(
         "item" => {
             if let Some(id) = id {
                 let state = crate::models::EntryState {
-                    read: as_value.map(|v| v == "read"),
-                    starred: as_value.map(|v| v == "saved"),
+                    read: match as_value {
+                        Some("read") => Some(true),
+                        Some("unread") => Some(false),
+                        _ => None,
+                    },
+                    starred: match as_value {
+                        Some("saved") => Some(true),
+                        Some("unsaved") => Some(false),
+                        _ => None,
+                    },
                     labels: None,
                 };
                 db::set_entry_state(&s.pool, id, &state)
