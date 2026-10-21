@@ -11,13 +11,24 @@ use std::sync::Arc;
 use thiserror::Error;
 use url::Url;
 
+fn error_chain(error: &dyn std::error::Error) -> String {
+    let mut out = error.to_string();
+    let mut source = error.source();
+    while let Some(cause) = source {
+        out.push_str(": ");
+        out.push_str(&cause.to_string());
+        source = cause.source();
+    }
+    out
+}
+
 #[derive(Debug, Error)]
 pub enum IngestError {
     #[error("URL rejected: {0}")]
     Url(#[from] crate::security::ssrf::UrlGuardError),
     #[error("HTTP {0}")]
     Http(StatusCode),
-    #[error("request failed: {0}")]
+    #[error("request failed: {}", error_chain(.0))]
     Request(#[from] reqwest::Error),
     #[error("feed parse failed")]
     Parse,
