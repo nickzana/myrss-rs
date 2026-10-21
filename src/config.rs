@@ -9,6 +9,7 @@ use std::{
 pub struct Config {
     #[serde(default = "default_listen")]
     pub listen: SocketAddr,
+    #[serde(default)]
     pub public_url: String,
     #[serde(default = "default_data_dir")]
     pub data_dir: PathBuf,
