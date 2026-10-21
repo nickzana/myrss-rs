@@ -32,7 +32,19 @@ pub async fn import_freshrss(state: &AppState, source: &Path) -> Result<ImportRe
         .connect_with(source_options)
         .await?;
     let table_names = table_names(&source_pool).await?;
-    let prefix = freshrss_prefix(&table_names).ok_or(sqlx::Error::RowNotFound)?;
+    let prefix = freshrss_prefix(&table_names).ok_or_else(|| {
+        let mut names = table_names.iter().cloned().collect::<Vec<_>>();
+        names.sort();
+        names.truncate(20);
+        sqlx::Error::Io(std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            format!(
+                "{} is not a FreshRSS database (no feed/entry tables; found: {})",
+                source.display(),
+                names.join(", ")
+            ),
+        ))
+    })?;
     let feed_table = format!("{prefix}feed");
     let entry_table = format!("{prefix}entry");
     let category_table = table_names
