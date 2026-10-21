@@ -1,0 +1,18 @@
+services:
+  myrss:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - myrss-data:/var/lib/myrss
+      - ./config.toml:/etc/myrss/config.toml:ro
+    secrets:
+      - myrss_owner_password
+    restart: unless-stopped
+
+volumes:
+  myrss-data:
+
+secrets:
+  myrss_owner_password:
+    file: ./secrets/owner-password.txt

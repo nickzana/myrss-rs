@@ -1,0 +1,49 @@
+[package]
+name = "myrss"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+license = "MIT"
+description = "A single-user, self-hosted RSS reader"
+
+[lib]
+name = "myrss"
+path = "src/lib.rs"
+
+[[bin]]
+name = "myrss"
+path = "src/main.rs"
+
+[dependencies]
+ammonia = "4"
+argon2 = "0.5"
+axum = { version = "0.8", features = ["macros"] }
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+clap = { version = "4", features = ["derive"] }
+feed-rs = "2"
+flate2 = "1"
+jsonwebtoken = "10"
+ipnet = "2"
+futures = "0.3"
+md-5 = "0.10"
+percent-encoding = "2"
+rand = "0.9"
+rand_core = { version = "0.6", features = ["getrandom"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "gzip", "brotli", "json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+sqlx = { version = "0.8", default-features = false, features = ["runtime-tokio-rustls", "sqlite", "macros", "chrono", "migrate"] }
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal", "fs", "net", "time"] }
+toml = "0.9"
+tower-http = { version = "0.6", features = ["fs", "set-header", "trace", "limit"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+url = "2"
+uuid = { version = "1", features = ["v4", "serde"] }
+
+[dev-dependencies]
+axum-test = "17"
+tempfile = "3"

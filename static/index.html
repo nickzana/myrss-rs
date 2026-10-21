@@ -1,0 +1,11 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><title>myrss</title><link rel="stylesheet" href="/style.css"></head><body>
+<div id="login" class="login" hidden><form id="loginForm"><h1>myrss</h1><p>Owner sign in</p><input id="password" type="password" autocomplete="current-password" placeholder="Password" required><button>Sign in</button><p id="loginError" class="error"></p></form></div>
+<div id="app" class="app" hidden>
+<aside class="sidebar"><div class="brand"><strong>myrss</strong><button id="refreshAll" title="Refresh all">↻</button></div>
+<form id="addFeed" class="add"><input id="feedUrl" type="url" placeholder="Feed or site URL" required><input id="feedFolder" placeholder="Folder"><button>Add</button></form>
+<nav><button class="nav active" data-filter="unread">Unread <span id="unreadCount"></span></button><button class="nav" data-filter="all">All <span id="totalCount"></span></button><button class="nav" data-filter="starred">Starred <span id="starredCount"></span></button></nav>
+<section><h2>Folders</h2><div id="folders"></div></section><section><h2>Feeds</h2><div id="feeds"></div></section>
+<details><summary>Subscriptions & apps</summary><button id="exportOpml">Export OPML</button><input id="opmlFile" type="file" accept=".opml,.xml"><button id="importOpml">Import OPML</button><form id="credForm"><input id="credName" placeholder="App name" required><button>Create app credential</button></form><pre id="credOut"></pre><div id="creds"></div></details><button id="logout">Sign out</button></aside>
+<main class="list"><form id="search"><input id="q" placeholder="Search articles"><button>Search</button></form><div id="entries" tabindex="0"></div><button id="more" hidden>Load more</button></main>
+<section class="reader"><div class="toolbar"><button id="markRead">Read</button><button id="star">☆</button><a id="original" target="_blank" rel="noopener noreferrer">Original</a></div><article id="article"><h1>Select an article</h1><p>Feed failures are shown beside their feeds.</p></article></section>
+</div><script src="/app.js?v=APP_VERSION"></script></body></html>

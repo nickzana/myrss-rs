@@ -1,0 +1,12 @@
+target
+data
+secrets
+.git
+.github
+docs
+artifacts
+
+/config.toml
+*.db
+*.db-*
+.env

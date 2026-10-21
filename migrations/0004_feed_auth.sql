@@ -1,0 +1,1 @@
+ALTER TABLE feeds ADD COLUMN http_auth TEXT;

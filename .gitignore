@@ -1,0 +1,7 @@
+/target
+/data
+/config.toml
+/secrets
+*.db
+*.db-*
+.env

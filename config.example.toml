@@ -1,0 +1,35 @@
+listen = "0.0.0.0:8080"
+public_url = "http://localhost:8080"
+data_dir = "/var/lib/myrss"
+
+[auth]
+mode = "local"
+session_idle_hours = 12
+
+[auth.local]
+password_file = "/run/myrss-secrets/myrss_owner_password"
+
+# [auth]
+# mode = "oidc"
+# [auth.oidc]
+# issuer_url = "https://id.example.com"
+# client_id = "myrss"
+# client_secret_file = "/run/myrss-secrets/myrss_oidc_secret"
+# subject = "optional-provider-subject"
+
+# [auth]
+# mode = "proxy"
+# [auth.proxy]
+# trusted_peer_cidrs = ["10.0.0.0/8"]
+# user_header = "X-Forwarded-User"
+# expected_user = "owner@example.com"
+
+[feed]
+refresh_minutes = 30
+allow_private_networks = false
+allowed_hosts = []
+
+[server]
+remote_media = false
+retention_days = 90
+debug = false
