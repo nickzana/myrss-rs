@@ -31,21 +31,33 @@ pub fn router(state: Arc<crate::AppState>) -> Router {
         .layer(SetResponseHeaderLayer::if_not_present(header::X_CONTENT_TYPE_OPTIONS, HeaderValue::from_static("nosniff")))
         .with_state(state)
 }
-async fn index() -> Html<&'static str> {
-    Html(include_str!("../../static/index.html"))
-}
-async fn js() -> ([(header::HeaderName, HeaderValue); 1], &'static str) {
+async fn index() -> impl IntoResponse {
     (
-        [(
-            header::CONTENT_TYPE,
-            HeaderValue::from_static("text/javascript"),
-        )],
+        [(header::CACHE_CONTROL, HeaderValue::from_static("no-cache"))],
+        Html(
+            include_str!("../../static/index.html")
+                .replace("APP_VERSION", env!("CARGO_PKG_VERSION")),
+        ),
+    )
+}
+async fn js() -> ([(header::HeaderName, HeaderValue); 2], &'static str) {
+    (
+        [
+            (
+                header::CONTENT_TYPE,
+                HeaderValue::from_static("text/javascript"),
+            ),
+            (header::CACHE_CONTROL, HeaderValue::from_static("no-cache")),
+        ],
         include_str!("../../static/app.js"),
     )
 }
-async fn css() -> ([(header::HeaderName, HeaderValue); 1], &'static str) {
+async fn css() -> ([(header::HeaderName, HeaderValue); 2], &'static str) {
     (
-        [(header::CONTENT_TYPE, HeaderValue::from_static("text/css"))],
+        [
+            (header::CONTENT_TYPE, HeaderValue::from_static("text/css")),
+            (header::CACHE_CONTROL, HeaderValue::from_static("no-cache")),
+        ],
         include_str!("../../static/style.css"),
     )
 }
