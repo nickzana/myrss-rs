@@ -15,5 +15,7 @@ COPY docker-entrypoint.sh /usr/local/bin/myrss-entrypoint
 RUN chmod 755 /usr/local/bin/myrss-entrypoint
 EXPOSE 8080
 VOLUME ["/var/lib/myrss"]
+# The default data_dir (./data) resolves under the mounted volume.
+WORKDIR /var/lib/myrss
 ENTRYPOINT ["myrss-entrypoint"]
 CMD ["--config", "/etc/myrss/config.toml", "serve"]
