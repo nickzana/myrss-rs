@@ -266,7 +266,7 @@ async fn items_for(s: &AppState, ids: Vec<i64>) -> R<Vec<serde_json::Value>> {
                 cats.push(format!("user/-/label/{f}"))
             }
             cats.extend(e.labels.iter().map(|l| format!("user/-/label/{l}")));
-            items.push(json!({"crawlTimeMsec":e.item.discovered_at.timestamp_millis().to_string(),"timestampUsec":e.item.discovered_at.timestamp_micros().to_string(),"id":e.item.id.to_string(),"categories":cats,"title":e.item.title,"published":e.item.published_at.map(|d|d.timestamp()).unwrap_or(0),"updated":e.item.published_at.map(|d|d.timestamp()).unwrap_or(0),"canonical":[{"href":e.item.url}],"alternate":[{"href":e.item.url}],"summary":{"direction":"ltr","content":e.summary.or(e.content).unwrap_or_default()},"author":e.item.author,"origin":{"streamId":format!("feed/{}",e.item.feed_id),"title":e.item.feed_title,"htmlUrl":e.item.url}}));
+            items.push(json!({"crawlTimeMsec":e.item.discovered_at.timestamp_millis().to_string(),"timestampUsec":e.item.discovered_at.timestamp_micros().to_string(),"id":format!("tag:google.com,2005:reader/item/{:016x}",e.item.id),"categories":cats,"title":e.item.title,"published":e.item.published_at.map(|d|d.timestamp()).unwrap_or(0),"updated":e.item.published_at.map(|d|d.timestamp()).unwrap_or(0),"canonical":[{"href":e.item.url}],"alternate":[{"href":e.item.url}],"summary":{"direction":"ltr","content":e.summary.or(e.content).unwrap_or_default()},"author":e.item.author,"origin":{"streamId":format!("feed/{}",e.item.feed_id),"title":e.item.feed_title,"htmlUrl":e.item.url}}));
         }
     }
     Ok(items)
@@ -492,5 +492,20 @@ fn parse_item_id(v: &str) -> Option<i64> {
         i64::from_str_radix(candidate, 16).ok()
     } else {
         candidate.parse().ok()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::parse_item_id;
+
+    #[test]
+    fn parses_decimal_and_hex_item_ids() {
+        assert_eq!(parse_item_id("10"), Some(10));
+        assert_eq!(
+            parse_item_id("tag:google.com,2005:reader/item/000000000000000a"),
+            Some(10)
+        );
+        assert_eq!(parse_item_id("0000000000000010"), Some(16));
     }
 }
