@@ -1,6 +1,18 @@
 # myrss
 
-A single-user, self-hosted RSS reader in Rust. It combines feed fetching, a fast embedded web UI, SQLite storage, Google Reader/FreshRSS-compatible endpoints, and an optional Fever endpoint in one binary.
+A single-user, self-hosted RSS reader in Rust. One binary: feed fetching, a
+fast embedded web UI, SQLite storage, Google Reader/FreshRSS-compatible
+endpoints, and an optional Fever endpoint.
+
+![Reader](docs/screenshots/reader.png)
+
+- Three auth modes: local password, OIDC (auth code + PKCE), trusted proxy
+  header — see [architecture](docs/ARCHITECTURE.md).
+- Reader apps connect with named, revocable credentials over
+  `/api/greader.php` or `/api/fever.php` — verified with NetNewsWire and
+  Read You.
+- FreshRSS SQLite import covers feeds, folders, articles, read/starred state,
+  and labels.
 
 ## Run with Docker
 
@@ -23,6 +35,9 @@ myrss --config config.toml create-credential netnewswire
 myrss --config config.toml import-freshrss /path/to/freshrss/data
 ```
 
-Docs: [architecture](docs/ARCHITECTURE.md), [security](docs/SECURITY.md), [deployment](docs/DEPLOYMENT.md), [user guide](docs/USER_GUIDE.md).
+Docs: [architecture](docs/ARCHITECTURE.md), [security](docs/SECURITY.md),
+[deployment](docs/DEPLOYMENT.md), [user guide](docs/USER_GUIDE.md).
+
+Examples: [Caddy + Authelia forward-auth](examples/caddy-authelia).
 
 MIT licensed.
