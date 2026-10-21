@@ -45,6 +45,15 @@ pub async fn handle(
     }
     if let Some(mark) = params.get("mark") {
         apply_mark(&s, &params, mark).await?;
+        match params.get("as").map(String::as_str) {
+            Some("read") | Some("unread") => {
+                out["unread_item_ids"] = id_list(&s, false).await?;
+            }
+            Some("saved") | Some("unsaved") => {
+                out["saved_item_ids"] = id_list(&s, true).await?;
+            }
+            _ => {}
+        }
     }
     let _ = credential;
     Ok(Json(out))
@@ -172,9 +181,29 @@ async fn apply_mark(
             }
         }
         "group" if as_value == Some("read") => {
-            db::mark_all_read(&s.pool, None)
+            let group_id = id.unwrap_or_default();
+            if group_id == 0 {
+                db::mark_all_read(&s.pool, None)
+                    .await
+                    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            } else {
+                let folders = sqlx::query_scalar::<_, String>(
+                    "SELECT DISTINCT folder FROM feeds WHERE folder IS NOT NULL ORDER BY folder",
+                )
+                .fetch_all(&s.pool)
                 .await
                 .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+                let folder = folders
+                    .get(
+                        usize::try_from(group_id)
+                            .unwrap_or(usize::MAX)
+                            .saturating_sub(1),
+                    )
+                    .ok_or(StatusCode::BAD_REQUEST)?;
+                db::mark_label_read(&s.pool, folder)
+                    .await
+                    .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
+            }
         }
         _ => {}
     }
