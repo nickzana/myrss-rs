@@ -78,6 +78,8 @@ pub struct FeedConfig {
     pub allow_private_networks: bool,
     #[serde(default)]
     pub allowed_hosts: Vec<String>,
+    #[serde(default)]
+    pub proxy: Option<String>,
 }
 impl Default for FeedConfig {
     fn default() -> Self {
@@ -88,6 +90,7 @@ impl Default for FeedConfig {
             request_timeout_seconds: default_request_timeout_seconds(),
             allow_private_networks: false,
             allowed_hosts: vec![],
+            proxy: None,
         }
     }
 }

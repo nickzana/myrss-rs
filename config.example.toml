@@ -27,6 +27,7 @@ password_file = "/run/myrss-secrets/myrss_owner_password"
 refresh_minutes = 30
 allow_private_networks = false
 allowed_hosts = []
+# proxy = "http://gluetun:8888" # feed egress via shared proxy (e.g. gluetun http proxy)
 
 [server]
 remote_media = false

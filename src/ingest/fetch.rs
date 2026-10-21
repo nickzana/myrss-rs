@@ -39,8 +39,12 @@ impl Fetcher {
             config.allow_private_networks,
             config.allowed_hosts.clone(),
         );
-        let client = Client::builder()
-            .dns_resolver(Arc::new(resolver))
+        let mut builder = Client::builder().dns_resolver(Arc::new(resolver));
+        if let Some(proxy) = &config.proxy {
+            builder = builder
+                .proxy(reqwest::Proxy::all(proxy).expect("feed.proxy must be a valid proxy URL"));
+        }
+        let client = builder
             .redirect(reqwest::redirect::Policy::none())
             .timeout(std::time::Duration::from_secs(
                 config.request_timeout_seconds,
