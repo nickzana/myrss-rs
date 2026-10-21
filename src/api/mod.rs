@@ -25,6 +25,11 @@ pub fn router(state: Arc<crate::AppState>) -> Router {
             "/api/fever.php",
             axum::routing::post(fever::handle).get(fever::handle),
         )
+        .layer(tower_http::trace::TraceLayer::new_for_http().on_response(
+            |res: &axum::http::Response<_>, latency: std::time::Duration, _span: &tracing::Span| {
+                tracing::debug!(status = %res.status().as_u16(), ?latency, "request");
+            },
+        ))
         .layer(RequestBodyLimitLayer::new(16 * 1024 * 1024))
         .layer(SetResponseHeaderLayer::if_not_present(header::CONTENT_SECURITY_POLICY, HeaderValue::from_static("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")))
         .layer(SetResponseHeaderLayer::if_not_present(header::REFERRER_POLICY, HeaderValue::from_static("no-referrer")))

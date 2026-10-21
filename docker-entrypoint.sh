@@ -1,6 +1,10 @@
 #!/bin/sh
 set -eu
 
+# Bind-mounted data dirs are often owned by a host uid; make them writable.
+mkdir -p /var/lib/myrss
+chown -R myrss:myrss /var/lib/myrss 2>/dev/null || true
+
 mkdir -p /run/myrss-secrets
 if [ -d /run/secrets ]; then
   for src in /run/secrets/*; do

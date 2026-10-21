@@ -11,7 +11,12 @@ use std::path::Path;
 pub type DbResult<T> = Result<T, sqlx::Error>;
 
 pub async fn connect(config: &Config) -> DbResult<SqlitePool> {
-    std::fs::create_dir_all(&config.data_dir).map_err(sqlx::Error::Io)?;
+    std::fs::create_dir_all(&config.data_dir).map_err(|e| {
+        sqlx::Error::Io(std::io::Error::new(
+            e.kind(),
+            format!("create_dir_all {}: {e}", config.data_dir.display()),
+        ))
+    })?;
     let options = SqliteConnectOptions::new()
         .filename(config.database_path())
         .create_if_missing(true)
@@ -22,7 +27,14 @@ pub async fn connect(config: &Config) -> DbResult<SqlitePool> {
     let pool = SqlitePoolOptions::new()
         .max_connections(5)
         .connect_with(options)
-        .await?;
+        .await
+        .map_err(|e| match e {
+            sqlx::Error::Io(io) => sqlx::Error::Io(std::io::Error::new(
+                io.kind(),
+                format!("{}: {io}", config.database_path().display()),
+            )),
+            other => other,
+        })?;
     sqlx::migrate!("./migrations").run(&pool).await?;
     sqlx::query("INSERT OR IGNORE INTO owner(id, username) VALUES (1, 'owner')")
         .execute(&pool)

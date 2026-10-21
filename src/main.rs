@@ -23,12 +23,25 @@ enum Command {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    tracing_subscriber::fmt()
-        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
-        .init();
     let cli = Cli::parse();
     let config = myrss::config::Config::load(std::path::Path::new(&cli.config))
         .map_err(|e| format!("configuration error: {e}"))?;
+    let filter = std::env::var("RUST_LOG").unwrap_or_else(|_| {
+        if config.server.debug {
+            "myrss=debug,tower_http=debug,sqlx=warn".to_string()
+        } else {
+            "info".to_string()
+        }
+    });
+    tracing_subscriber::fmt()
+        .with_env_filter(tracing_subscriber::EnvFilter::new(&filter))
+        .init();
+    tracing::debug!(
+        data_dir = %config.data_dir.display(),
+        auth = ?config.auth.mode,
+        feed_proxy = ?config.feed.proxy,
+        "config loaded"
+    );
     match cli.command.unwrap_or(Command::Serve) {
         Command::CheckConfig => {
             println!("configuration ok");
