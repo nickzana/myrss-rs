@@ -202,9 +202,9 @@ function renderNav() {
   $('#unreadCount').textContent = snapshot.unread;
   $('#totalCount').textContent = snapshot.total;
   $('#starredCount').textContent = snapshot.starred;
-  $('#folders').innerHTML = snapshot.folders.map(f => '<button class="folder" data-folder="' + esc(f) + '">' + icon('folder') + '<span>' + esc(f) + '</span></button>').join('') || '<p class="sidebar-empty">Give your feeds a home.</p>';
+  $('#folders').innerHTML = snapshot.folders.map(f => '<button class="folder" data-folder="' + esc(f) + '">' + icon('folder') + '<span>' + esc(f) + '</span></button>').join('') || '<p class="sidebar-empty">No folders</p>';
   $('#folderSuggestions').innerHTML = snapshot.folders.map(f => '<option value="' + esc(f) + '"></option>').join('');
-  $('#feeds').innerHTML = snapshot.feeds.map(f => '<button class="feed" data-id="' + f.id + '" title="' + esc(f.last_error || f.title) + '">' + icon(f.paused ? 'pause' : 'rss') + '<span class="feed-name">' + esc(f.title) + '</span>' + (f.last_error ? '<span class="feed-problem" aria-label="Feed refresh failed">' + icon('alert') + '</span>' : '') + '<span class="count">' + f.unread + '</span></button>').join('') || '<p class="sidebar-empty">Add your first favorite source.</p>';
+  $('#feeds').innerHTML = snapshot.feeds.map(f => '<button class="feed" data-id="' + f.id + '" title="' + esc(f.last_error || f.title) + '">' + icon(f.paused ? 'pause' : 'rss') + '<span class="feed-name">' + esc(f.title) + '</span>' + (f.last_error ? '<span class="feed-problem" aria-label="Feed refresh failed">' + icon('alert') + '</span>' : '') + '<span class="count">' + f.unread + '</span></button>').join('') || '<p class="sidebar-empty">No feeds</p>';
   $$('.folder').forEach(b => b.onclick = () => chooseScope(null, b.dataset.folder));
   $$('.feed').forEach(b => b.onclick = () => chooseScope(Number(b.dataset.id), null));
   $('#labelFilterWrap').hidden = !snapshot.labels.length;
@@ -251,7 +251,7 @@ function clearFilters() {
 }
 $('#clearFilters').onclick = clearFilters;
 function emptyList(title, message, action = '') {
-  return '<div class="empty-list">' + icon('inbox') + '<h3>' + esc(title) + '</h3><p>' + esc(message) + '</p>' + action + '</div>';
+  return '<div class="empty-list"><h3>' + esc(title) + '</h3><p>' + esc(message) + '</p>' + action + '</div>';
 }
 async function loadEntries(reset) {
   if (!reset && loading) return;
@@ -262,7 +262,7 @@ async function loadEntries(reset) {
   $('#more').disabled = true;
   if (reset) {
     entries = []; nextBefore = null;
-    $('#entries').innerHTML = emptyList('Loading your articles…', 'Just a moment.');
+    $('#entries').innerHTML = emptyList('Loading…', '');
     $('#more').hidden = true;
   }
   const params = new URLSearchParams({ filter, limit: '60' });
@@ -300,8 +300,8 @@ function renderEntries() {
     const constrained = feedId || folder || query || label;
     const noFeeds = !snapshot?.feeds.length;
     $('#entries').innerHTML = emptyList(
-      noFeeds ? 'Your next read starts here' : constrained ? 'No matching articles' : filter === 'unread' ? 'You’re all caught up' : filter === 'starred' ? 'Keep the good ones' : 'Nothing here yet',
-      noFeeds ? 'Add a favorite source or import your subscriptions in Settings.' : constrained ? 'Try a different reading status or clear your filters.' : filter === 'starred' ? 'Star an article to find it here later.' : 'Pick another view, or refresh your feeds.',
+      noFeeds ? 'No feeds' : constrained ? 'No matching articles' : filter === 'unread' ? 'No unread articles' : filter === 'starred' ? 'No starred articles' : 'No articles',
+      constrained ? 'Try another reading status or clear filters.' : '',
       noFeeds ? '<button id="emptyAdd">' + icon('plus') + 'Add a feed</button>' : constrained ? '<button id="emptyClear">Clear filters</button>' : ''
     );
     if ($('#emptyAdd')) $('#emptyAdd').onclick = showFeedDialog;
@@ -410,7 +410,7 @@ $('#addFeed').onsubmit = async e => {
   try {
     await api('/api/v1/feeds', { method: 'POST', body: JSON.stringify({ url: $('#feedUrl').value, folder: $('#feedFolder').value.trim() || null }) });
     $('#addFeed').reset(); $('#feedDialog').close();
-    notify('Feed added. Articles will appear after it finishes fetching.');
+    notify('Feed added. Fetching articles…');
     await refresh();
   } catch (err) { $('#feedError').textContent = 'Could not add this feed. Check the URL and try again. ' + err.message; }
   finally { $('#submitFeed').disabled = false; }

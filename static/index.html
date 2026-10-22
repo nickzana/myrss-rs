@@ -11,7 +11,7 @@
   <div id="login" class="login" hidden>
     <form id="loginForm">
       <div class="brand-mark" data-icon="rss"></div>
-      <h1>A little less noise.</h1><p>Your feeds. Your pace. Sign in to myrss.</p>
+      <h1>Sign in to myrss</h1>
       <label id="passwordLabel" for="password">Password</label>
       <input id="password" type="password" autocomplete="current-password" required>
       <button class="primary">Sign in <span data-icon="arrow"></span></button>
@@ -21,10 +21,9 @@
   <div id="app" class="app" hidden>
     <button id="drawerBackdrop" class="backdrop" aria-label="Close navigation" hidden></button>
     <aside id="sidebar" class="sidebar" aria-label="Library navigation">
-      <div class="brand"><a href="#reader" aria-label="myrss reader"><span class="brand-mark" data-icon="rss"></span>myrss<span class="brand-dot">.</span></a><button id="closeMenu" class="icon-button mobile-only" aria-label="Close navigation" data-icon="close"></button></div>
+      <div class="brand"><a href="#reader" aria-label="myrss reader"><span data-icon="rss"></span>myrss</a><button id="closeMenu" class="icon-button mobile-only" aria-label="Close navigation" data-icon="close"></button></div>
       <button class="add-feed" data-add-feed><span data-icon="plus"></span>Add a feed</button>
       <div class="sidebar-scroll">
-        <p class="eyebrow">Library</p>
         <nav aria-label="Article collections">
           <button class="nav" data-filter="unread"><span data-icon="inbox"></span><span>Unread</span><span id="unreadCount" class="count">0</span></button>
           <button class="nav" data-filter="all"><span data-icon="layers"></span><span>All articles</span><span id="totalCount" class="count">0</span></button>
@@ -33,12 +32,12 @@
         <section><h2 class="eyebrow">Folders</h2><div id="folders"></div></section>
         <section><div class="section-label"><h2 class="eyebrow">Feeds</h2><button id="refreshAll" class="icon-button" title="Refresh all feeds" aria-label="Refresh all feeds" data-icon="refresh"></button></div><div id="feeds"></div></section>
       </div>
-      <div class="sidebar-footer"><a id="settingsLink" class="nav" href="#settings"><span data-icon="settings"></span><span>Settings</span><span data-icon="chevron"></span></a><div class="local-note"><span class="status-dot"></span>Your personal reading space</div></div>
+      <div class="sidebar-footer"><a id="settingsLink" class="nav" href="#settings"><span data-icon="settings"></span><span>Settings</span></a></div>
     </aside>
     <main id="workspace" class="workspace">
       <header class="page-header">
         <button id="menu" class="icon-button mobile-only" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-icon="menu"></button>
-        <div><p class="eyebrow">Your reading space</p><h1 id="viewTitle">Unread</h1></div>
+        <h1 id="viewTitle">Unread</h1>
         <span id="viewCount" class="header-note"></span>
       </header>
       <div class="reading-layout">
@@ -51,7 +50,6 @@
           </div>
           <div id="entries" aria-busy="false"></div>
           <button id="more" class="load-more" hidden>Load more articles <span data-icon="chevron"></span></button>
-          <p class="list-footer">A quieter corner of the internet.</p>
         </section>
         <section id="reader" class="reader" aria-label="Article reader" tabindex="-1">
           <div class="toolbar">
@@ -65,24 +63,24 @@
             </div>
             <button id="focusReader" class="icon-button focus-toggle" aria-label="Expand reader" title="Expand reader" aria-pressed="false" data-icon="expand"></button>
           </div>
-          <div id="readerEmpty" class="reader-empty"><div class="empty-illustration" data-icon="book"></div><p class="eyebrow">Room to read</p><h2>Good things, at your pace.</h2><p>Choose an article and settle in.<br>Your next idea is a little closer.</p><div class="keyboard-hint"><kbd>j</kbd><kbd>k</kbd> to browse <span>·</span> <kbd>s</kbd> to star</div></div>
+          <div id="readerEmpty" class="reader-empty"><p>Select an article</p></div>
           <article id="article" hidden></article>
         </section>
       </div>
     </main>
     <main id="settings" class="settings" hidden>
-      <header class="page-header"><a class="icon-button" href="#reader" aria-label="Back to reader" data-icon="back"></a><div><p class="eyebrow">Make yourself at home</p><h1 tabindex="-1">Settings</h1></div></header>
+      <header class="page-header"><a class="icon-button" href="#reader" aria-label="Back to reader" data-icon="back"></a><h1 tabindex="-1">Settings</h1></header>
       <div class="settings-content">
         <nav class="settings-nav" aria-label="Settings sections"><a href="#appearance">Appearance</a><a href="#subscriptions">Subscriptions</a><a href="#reader-apps">Reader apps</a></nav>
-        <section id="appearance" class="settings-card"><div class="card-heading"><span data-icon="sliders"></span><div><h2>Appearance</h2><p>A reading space that feels like yours. Saved in this browser.</p></div></div><div class="preference"><label for="theme">Theme<span>Follow your device, or choose your own.</span></label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div><div class="preference"><label for="density">Article list<span>More breathing room, or more at a glance.</span></label><select id="density"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></div><div class="preference"><label for="textSize">Reading size<span>Applies to article text.</span></label><select id="textSize"><option value="regular">Regular</option><option value="large">Large</option></select></div></section>
-        <section id="subscriptions" class="settings-card"><div class="card-heading"><span data-icon="rss"></span><div><h2>Subscriptions</h2><p>Bring your favorite sources together.</p></div><button class="small-button" data-add-feed><span data-icon="plus"></span>Add feed</button></div><div id="managedFeeds"></div><div class="opml"><h3>Move your library</h3><p>Import subscriptions from another reader or keep an OPML backup.</p><div class="import-row"><label class="file-label" for="opmlFile">OPML file<input id="opmlFile" type="file" accept=".opml,.xml"></label><button id="importOpml"><span data-icon="upload"></span>Import</button></div><button id="exportOpml" class="text-button"><span data-icon="download"></span>Export subscriptions</button></div></section>
-        <section id="reader-apps" class="settings-card"><div class="card-heading"><span data-icon="phone"></span><div><h2>Reader apps</h2><p>Connect your favorite app with its own revocable password.</p></div></div><form id="credForm" class="inline-form"><label for="credName">App name<input id="credName" placeholder="e.g. NetNewsWire" required maxlength="100"></label><button class="primary">Create credential</button></form><div id="credentialResult" class="credential-result" hidden><strong>Save these details now</strong><p>The password won’t be shown again.</p><pre id="credOut"></pre><button id="dismissCredential" class="text-button">I’ve saved these details</button></div><div id="creds"></div></section>
-        <section class="settings-card"><div class="card-heading"><span data-icon="keyboard"></span><div><h2>Keyboard shortcuts</h2><p>Keep your hands on the keys.</p></div></div><div class="shortcuts"><span><kbd>j</kbd> / <kbd>k</kbd> Next / previous</span><span><kbd>s</kbd> Star article</span><span><kbd>m</kbd> Toggle read</span><span><kbd>Esc</kbd> Back to list</span></div></section>
-        <footer class="settings-footer"><span>myrss · Built for a little less noise.</span><button id="logout" class="text-button"><span data-icon="logout"></span>Sign out</button></footer>
+        <section id="appearance" class="settings-card"><div class="card-heading"><h2>Appearance</h2><span class="muted">This browser only</span></div><div class="preference"><label for="theme">Theme</label><select id="theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div><div class="preference"><label for="density">List density</label><select id="density"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></div><div class="preference"><label for="textSize">Article text size</label><select id="textSize"><option value="regular">Regular</option><option value="large">Large</option></select></div></section>
+        <section id="subscriptions" class="settings-card"><div class="card-heading"><h2>Subscriptions</h2><button class="small-button" data-add-feed><span data-icon="plus"></span>Add feed</button></div><div id="managedFeeds"></div><div class="opml"><h3>Import / export</h3><div class="import-row"><label class="file-label" for="opmlFile">OPML file<input id="opmlFile" type="file" accept=".opml,.xml"></label><button id="importOpml"><span data-icon="upload"></span>Import</button></div><button id="exportOpml" class="text-button"><span data-icon="download"></span>Export OPML</button></div></section>
+        <section id="reader-apps" class="settings-card"><div class="card-heading"><h2>Reader apps</h2></div><form id="credForm" class="inline-form"><label for="credName">App name<input id="credName" placeholder="NetNewsWire" required maxlength="100"></label><button class="primary">Create credential</button></form><div id="credentialResult" class="credential-result" hidden><strong>Copy this password. It won’t be shown again.</strong><pre id="credOut"></pre><button id="dismissCredential" class="text-button">Done</button></div><div id="creds"></div></section>
+        <section class="settings-card"><div class="card-heading"><h2>Keyboard shortcuts</h2></div><div class="shortcuts"><span><kbd>j</kbd> / <kbd>k</kbd> Next / previous</span><span><kbd>s</kbd> Star article</span><span><kbd>m</kbd> Toggle read</span><span><kbd>Esc</kbd> Back to list</span></div></section>
+        <footer class="settings-footer"><button id="logout" class="text-button"><span data-icon="logout"></span>Sign out</button></footer>
       </div>
     </main>
   </div>
-  <dialog id="feedDialog" aria-labelledby="feedDialogTitle"><form id="addFeed"><div class="dialog-heading"><h2 id="feedDialogTitle">Add a feed</h2><button id="closeFeedDialog" type="button" class="icon-button" aria-label="Close add feed" data-icon="close"></button></div><p>Paste an RSS feed or website URL. We’ll find the feed for you.</p><label for="feedUrl">Feed or website URL</label><input id="feedUrl" type="url" placeholder="https://example.com/feed" required><label for="feedFolder">Folder <span class="muted">(optional)</span></label><input id="feedFolder" placeholder="e.g. Design" list="folderSuggestions"><datalist id="folderSuggestions"></datalist><p id="feedError" class="error" role="alert"></p><button class="primary" id="submitFeed"><span data-icon="plus"></span>Add feed</button></form></dialog>
+  <dialog id="feedDialog" aria-labelledby="feedDialogTitle"><form id="addFeed"><div class="dialog-heading"><h2 id="feedDialogTitle">Add feed</h2><button id="closeFeedDialog" type="button" class="icon-button" aria-label="Close add feed" data-icon="close"></button></div><label for="feedUrl">Feed or website URL</label><input id="feedUrl" type="url" placeholder="https://example.com/feed" required><label for="feedFolder">Folder <span class="muted">(optional)</span></label><input id="feedFolder" list="folderSuggestions"><datalist id="folderSuggestions"></datalist><p id="feedError" class="error" role="alert"></p><button class="primary" id="submitFeed"><span data-icon="plus"></span>Add feed</button></form></dialog>
   <div id="notice" class="notice" role="status" hidden><span id="noticeText"></span><button id="dismissNotice" class="icon-button" aria-label="Dismiss notification" data-icon="close"></button></div>
   <script src="/app.js?v=APP_VERSION"></script>
 </body>
