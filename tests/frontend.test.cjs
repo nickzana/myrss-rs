@@ -137,6 +137,15 @@ test('settings hash routes and mobile back navigation restore the reader list', 
   assert.equal(app.element('#workspace').inert, false);
 });
 
+test('failed session requests show the sign-in screen', async () => {
+  const app = setup();
+  app.context.fetch = () => Promise.reject(new TypeError('Failed to fetch'));
+  app.element('#login').hidden = true;
+  await app.evaluate('boot()');
+  assert.equal(app.element('#login').hidden, false);
+  assert.equal(app.element('#app').hidden, true);
+});
+
 test('article titles are escaped and original links reject executable URLs', () => {
   const app = setup();
   assert.equal(app.evaluate("safeUrl('javascript:alert(1)')"), null);

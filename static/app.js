@@ -136,8 +136,8 @@ async function enterApp(session) {
   await refresh();
 }
 async function boot() {
-  const response = await fetch('/api/v1/session');
-  if (!response.ok) { await showLogin(); return; }
+  const response = await fetch('/api/v1/session').catch(() => null);
+  if (!response?.ok) { await showLogin(); return; }
   await enterApp(await response.json());
 }
 $('#loginForm').onsubmit = e => {
