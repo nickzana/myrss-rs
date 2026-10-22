@@ -7,6 +7,9 @@ TMP=$(mktemp -d)
 CID=""
 cleanup() {
   [ -z "$CID" ] || docker rm -f "$CID" >/dev/null 2>&1 || true
+  # The entrypoint chowns the bind mount to the container user.
+  docker run --rm --user 0 --entrypoint chown -v "$TMP/data:/data" "$IMG" \
+    -R "$(id -u):$(id -g)" /data >/dev/null 2>&1 || true
   rm -rf "$TMP"
 }
 trap cleanup EXIT
