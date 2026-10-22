@@ -107,7 +107,7 @@ article { max-width: 740px; margin: auto; padding: 36px 44px 70px; overflow-wrap
 .article-meta { font: 12px/1.7 system-ui, sans-serif; color: var(--muted); margin-bottom: 28px; }
 article img, article video, article iframe { max-width: 100%; height: auto; }article figure { margin: 1.5em 0; }article h2 { font-size: 1.35em; }article h3 { font-size: 1.15em; }
 article pre { overflow: auto; white-space: pre; padding: 14px; background: var(--bg); border-radius: 4px; font-size: 13px; }article blockquote { border-left: 2px solid var(--line); padding-left: 18px; margin-left: 0; color: var(--muted); }
-article table { display: block; max-width: 100%; overflow: auto; border-collapse: collapse; }article td, article th { border: 1px solid var(--line); padding: 5px 9px; }
+article table { display: block; max-width: 100%; overflow: auto; overflow-wrap: normal; border-collapse: collapse; }article td, article th { border: 1px solid var(--line); padding: 5px 9px; }
 [data-text-size="large"] article { font-size: 20px; }
 .reader-focused .reading-layout { grid-template-columns: 1fr; }.reader-focused .list { display: none; }.reader-focused #backToList { display: inline-flex; }
 .empty-list { text-align: center; padding: 35px 18px; color: var(--muted); }.empty-list h3 { color: var(--text); font-size: 14px; font-weight: 500; margin-bottom: 6px; }.empty-list p { font-size: 12px; }.empty-list p:empty { display: none; }.empty-list button { margin-top: 6px; font-size: 12px; }
